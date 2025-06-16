@@ -1,5 +1,5 @@
 package com.pluralsight.NorthwindTradersSpringBoot.dao;
-import com.pluralsight.NorthwindTradersSpringBoot.Product;
+import com.pluralsight.NorthwindTradersSpringBoot.model.Product;
 
 import java.util.List;
 

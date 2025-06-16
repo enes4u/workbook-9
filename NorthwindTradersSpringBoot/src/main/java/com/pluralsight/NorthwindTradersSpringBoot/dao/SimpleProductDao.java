@@ -1,7 +1,7 @@
 package com.pluralsight.NorthwindTradersSpringBoot.dao;
 
 
-import com.pluralsight.NorthwindTradersSpringBoot.Product;
+import com.pluralsight.NorthwindTradersSpringBoot.model.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
