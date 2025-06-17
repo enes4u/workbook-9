@@ -23,16 +23,16 @@ public class ProductDAOJDBCImpl implements ProductDao {
     @Override
     public List<Product> getAll() {
         this.products.clear();
-        String sql = "SELECT ProductID, Name, Category, Price FROM Products;";
+        String sql = "SELECT ProductID, ProductName, CategoryID, UnitPrice FROM Products;";
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rows = statement.executeQuery();
             while (rows.next()) {
                 this.products.add(new Product(
                         rows.getInt("ProductID"),
-                        rows.getString("Name"),
-                        rows.getInt("Category"),
-                        rows.getDouble("Price")
+                        rows.getString("ProductName"),
+                        rows.getInt("CategoryID"),
+                        rows.getDouble("UnitPrice")
                 ));
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
 
     @Override
     public Product getById(int productId) {
-        String sql = "SELECT ProductID, Name, Category, Price FROM Products WHERE ProductID = ?";
+        String sql = "SELECT ProductID, ProductName, Category, Price FROM Products WHERE ProductID = ?";
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, productId);
@@ -51,7 +51,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
             if (row.next()) {
                 return new Product(
                         row.getInt("ProductID"),
-                        row.getString("Name"),
+                        row.getString("ProductName"),
                         row.getInt("Category"),
                         row.getDouble("Price")
                 );
@@ -64,7 +64,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
 
     @Override
     public void add(Product product) {
-        String sql = "INSERT INTO Products (Name, Category, Price) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Products (ProductName, CategoryID, UnitPrice) VALUES (?, ?, ?)";
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, product.getProductName());
@@ -78,7 +78,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
 
     @Override
     public void update(Product product) {
-        String sql = "UPDATE Products SET Name = ?, Category = ?, Price = ? WHERE ProductID = ?";
+        String sql = "UPDATE Products SET ProductName = ?, Category = ?, UnitPrice = ? WHERE ProductID = ?";
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, product.getProductName());

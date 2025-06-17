@@ -45,7 +45,7 @@ public class NorthwindTradersSpringBootApplication {
 					deleteProduct(scanner);
 					break;
 				case 5:
-					searchProduct(scanner);
+					//searchProduct(scanner);
 					break;
 				case 6:
 					System.out.println("Exiting...");
@@ -108,15 +108,15 @@ public class NorthwindTradersSpringBootApplication {
 		System.out.println("Product deleted successfully!");
 	}
 
-	private static void searchProduct(Scanner scanner) {
-		System.out.println("Enter product name to search:");
-		String name = scanner.nextLine();
-		List<Product> results = productDao.searchByName(name);
-
-		if (results.isEmpty()) {
-			System.out.println("No products found!");
-		} else {
-			results.forEach(p -> System.out.println(p.getProductID() + " - " + p.getProductName() + " - " + p.getCategoryID() + " - $" + p.getUnitPrice()));
-		}
-	}
+//	private static void searchProduct(Scanner scanner) {
+//		System.out.println("Enter product name to search:");
+//		String name = scanner.nextLine();
+//		List<Product> results = productDao.searchByName(name);
+//
+//		if (results.isEmpty()) {
+//			System.out.println("No products found!");
+//		} else {
+//			results.forEach(p -> System.out.println(p.getProductID() + " - " + p.getProductName() + " - " + p.getCategoryID() + " - $" + p.getUnitPrice()));
+//		}
+//	}
 }

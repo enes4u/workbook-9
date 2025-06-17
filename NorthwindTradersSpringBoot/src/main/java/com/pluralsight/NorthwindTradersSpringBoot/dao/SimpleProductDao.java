@@ -50,11 +50,11 @@ public class SimpleProductDao implements ProductDao {
         products.removeIf(p -> p.getProductID() == productId);
     }
 
-    @Override
-    public List<Product> searchByName(String name) {
-        return products.stream()
-                .filter(p -> p.getProductName().equalsIgnoreCase(name))
-                .toList();
-    }
+//    @Override
+//    public List<Product> searchByName(String name) {
+//        return products.stream()
+//                .filter(p -> p.getProductName().equalsIgnoreCase(name))
+//                .toList();
+//    }
 
 }

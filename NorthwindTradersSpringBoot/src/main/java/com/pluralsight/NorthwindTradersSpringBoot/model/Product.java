@@ -47,4 +47,10 @@ public class Product {
     public void setProductID(int productID) {
         this.ProductID = productID;
     }
+    @Override
+    public String toString() {
+        return String.format("| %-10d | %-35s | %-10d | $%-10.2f |",
+                ProductID, ProductName, CategoryID, UnitPrice);
+    }
+
 }
