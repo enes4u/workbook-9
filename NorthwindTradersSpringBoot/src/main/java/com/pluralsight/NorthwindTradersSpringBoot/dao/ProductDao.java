@@ -9,6 +9,6 @@ public interface ProductDao {
     Product getById(int productID);
     void update(Product product);
     void delete(int ProductID);
-    List<Product> searchByName(String ProductName);
+//    List<Product> searchByName(String ProductName);
 
 }
