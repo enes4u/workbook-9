@@ -2,13 +2,13 @@ package com.pluralsight.NorthwindTradersSpringBoot.model;
 
 public class Category {
     private int categoryId;
-    private String categoryName;
+    private String CategoryName;
     private String description;
 
     // Constructor
-    public Category(int categoryId, String categoryName, String description) {
+    public Category(int categoryId, String CategoryName, String description) {
         this.categoryId = categoryId;
-        this.categoryName = categoryName;
+        this.CategoryName = CategoryName;
         this.description = description;
     }
 
@@ -22,11 +22,11 @@ public class Category {
     }
 
     public String getCategoryName() {
-        return categoryName;
+        return CategoryName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryName(String CategoryName) {
+        this.CategoryName = CategoryName;
     }
 
     public String getDescription() {

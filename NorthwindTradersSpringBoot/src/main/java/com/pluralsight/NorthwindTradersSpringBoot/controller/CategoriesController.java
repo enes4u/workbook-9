@@ -1,38 +1,50 @@
 package com.pluralsight.NorthwindTradersSpringBoot.controller;
 
+import com.pluralsight.NorthwindTradersSpringBoot.dao.CategoryDao;
 import com.pluralsight.NorthwindTradersSpringBoot.model.Category;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoriesController {
 
-    private List<Category> categories = new ArrayList<>();
+    private final CategoryDao categoryDao;
 
-    public CategoriesController() {
-        categories.add(new Category(9, "Baked Goods", "Artisan breads, cakes, muffins, and pastries"));
-        categories.add(new Category(10, "Frozen Foods", "Frozen vegetables, ready meals, and ice cream"));
-
+    @Autowired
+    public CategoriesController(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
     }
 
-    // GET all categories, with optional filter by name
+    // GET all categories-- filter by name
     @GetMapping
     public List<Category> getAllCategories(@RequestParam(required = false) String name) {
+        List<Category> categories = categoryDao.getAll();
+        if (name == null) {
+            return categories;
+        }
+        // Filter by name (case insensitive)
         return categories.stream()
-                .filter(c -> name == null || c.getCategoryName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
+                .filter(c -> c.getCategoryName().toLowerCase().contains(name.toLowerCase()))
+                .toList();
     }
 
-    // GET a category by ID
     @GetMapping("/{id}")
     public Category getCategoryById(@PathVariable int id) {
-        return categories.stream()
-                .filter(c -> c.getCategoryId() == id)
-                .findFirst()
-                .orElse(null); // You might want to throw an exception here for real projects
+        return categoryDao.getById(id);
     }
+
+    // POST (add) a new category
+    @PostMapping
+    public Category addCategory(@RequestBody Category category) {
+        return categoryDao.insert(category);
+    }
+    @PutMapping("/{id}")
+    public void updateCategory(@PathVariable int id, @RequestBody Category category) {
+        category.setCategoryId(id); // ensure path id is used
+        categoryDao.update(category);
+    }
+
 }
