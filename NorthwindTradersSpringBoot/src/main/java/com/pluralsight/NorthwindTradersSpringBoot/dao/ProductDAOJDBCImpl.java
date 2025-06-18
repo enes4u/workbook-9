@@ -19,6 +19,30 @@ public class ProductDAOJDBCImpl implements ProductDao {
         this.products = new ArrayList<>();
         this.dataSource = dataSource;
     }
+    @Override
+    public Product insert(Product product) {
+        String sql = "INSERT INTO Products (ProductName, CategoryID, UnitPrice) VALUES (?, ?, ?)";
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, product.getProductName());
+            statement.setInt(2, product.getCategoryID());
+            statement.setDouble(3, product.getUnitPrice());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Inserting product failed, no rows affected.");
+            }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    product.setProductID(generatedKeys.getInt(1));
+                }
+            }
+            return product;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @Override
     public List<Product> getAll() {
@@ -43,7 +67,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
 
     @Override
     public Product getById(int productId) {
-        String sql = "SELECT ProductID, ProductName, Category, Price FROM Products WHERE ProductID = ?";
+        String sql = "SELECT ProductID, ProductName, CategoryID, UnitPrice FROM Products WHERE ProductID = ?";
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, productId);
@@ -52,8 +76,8 @@ public class ProductDAOJDBCImpl implements ProductDao {
                 return new Product(
                         row.getInt("ProductID"),
                         row.getString("ProductName"),
-                        row.getInt("Category"),
-                        row.getDouble("Price")
+                        row.getInt("CategoryID"),
+                        row.getDouble("UnitPrice")
                 );
             }
         } catch (SQLException e) {
@@ -78,7 +102,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
 
     @Override
     public void update(Product product) {
-        String sql = "UPDATE Products SET ProductName = ?, Category = ?, UnitPrice = ? WHERE ProductID = ?";
+        String sql = "UPDATE Products SET ProductName = ?, CategoryID = ?, UnitPrice = ? WHERE ProductID = ?";
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, product.getProductName());
@@ -90,6 +114,7 @@ public class ProductDAOJDBCImpl implements ProductDao {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void delete(int productId) {

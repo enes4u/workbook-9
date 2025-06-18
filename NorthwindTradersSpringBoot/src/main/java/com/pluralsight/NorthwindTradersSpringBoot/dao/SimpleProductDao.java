@@ -26,6 +26,14 @@ public class SimpleProductDao implements ProductDao {
     public List<Product> getAll() {
         return products;
     }
+    @Override
+    public Product insert(Product product) {
+        // DB auto-increment
+        int newId = products.size() + 1;
+        product.setProductID(newId);
+        products.add(product);
+        return product;
+    }
 
     @Override
     public Product getById(int productId) {
